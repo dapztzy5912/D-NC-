@@ -4,7 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Qwen AI Image Generator</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+  body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 400px;
+  text-align: center;
+}
+
+input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+select {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#result img {
+  margin-top: 20px;
+  max-width: 100%;
+  border-radius: 10px;
+}
+  </style>
 </head>
 <body>
   <div class="container">
@@ -23,6 +69,34 @@
     <div id="result"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+  document.getElementById('promptForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const prompt = document.getElementById('prompt').value;
+  const size = document.getElementById('size').value;
+  const resultDiv = document.getElementById('result');
+
+  resultDiv.innerHTML = '<p>Loading image...</p>';
+
+  try {
+    const response = await fetch('/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, size })
+    });
+
+    const data = await response.json();
+
+    if (data.url) {
+      resultDiv.innerHTML = `<img src="${data.url}" alt="Generated Image" />`;
+    } else {
+      resultDiv.innerHTML = '<p>Error generating image.</p>';
+    }
+  } catch (error) {
+    console.error(error);
+    resultDiv.innerHTML = '<p>Something went wrong!</p>';
+  }
+});
+  </script>
 </body>
 </html>
