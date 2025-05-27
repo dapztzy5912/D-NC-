@@ -2,12 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
+const path = require('path');
+
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve index.html when accessing root URL
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 class QwenImage {
     constructor() {
@@ -77,8 +84,8 @@ class QwenImage {
             if (!sizeList.includes(size)) throw new Error(`Available sizes: ${sizeList.join(', ')}`);
             if (!typeList.includes(type)) throw new Error(`Available types: ${typeList.join(', ')}`);
 
-            const task_id = await this.getTask(prompt, size, type);
-            const result = await this.checkTask(task_id);
+            task_id = await this.getTask(prompt, size, type);
+            result = await this.checkTask(task_id);
 
             return result;
         } catch (error) {
