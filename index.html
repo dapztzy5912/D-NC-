@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Qwen AI Image Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Qwen AI Image Generator</h1>
+    <form id="promptForm">
+      <input type="text" id="prompt" placeholder="Enter your prompt..." required />
+      <select id="size">
+        <option value="1:1">1:1</option>
+        <option value="3:4">3:4</option>
+        <option value="4:3">4:3</option>
+        <option value="16:9">16:9</option>
+        <option value="9:16">9:16</option>
+      </select>
+      <button type="submit">Generate Image</button>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
